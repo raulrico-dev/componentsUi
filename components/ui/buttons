@@ -1,1 +1,73 @@
+"use client";
+
+import Link from "next/link";
+
+interface Props 
+// extends React.ButtonHTMLAttributes<HTMLButtonElement>
+{
+  type?: "primary" | "secondary" | "accent";
+  as?: "button" | "submit" | "reset" | "link";
+  size?: "sm" | "md" | "lg" | "";
+  href?: string;
+  className?: string;
+  children: React.ReactNode;
+}
+
+export default function Button({
+  as = "button",
+  type = "primary",
+  size = "md",
+  className = "",
+  href = '',
+  children,
+  ...props
+}: Props) {
+
+  const basicClasses = "rounded font-medium"
+
+  const typeClasses = {
+    primary: "bg-color-primary text-color-background",
+    secondary: "bg-color-secondary text-color-background",
+    accent: "bg-color-accent text-color-background",
+  };
+
+  const sizeClasses = {
+    sm: "py-2 px-4 text-xs md:text-sm xl:text-base",
+    DEFAULT: "py-3 px-6 text-xs md:text-sm xl:text-base",
+    md: "py-3 px-6 text-base md:text-lg xl:text-xl",
+    lg: "py-4 px-8 text-lg md:text-lg lg:text-xl",
+  };
+
+  if (as === "link" && href) {
+    return (
+      <Link
+        href={href}
+        className={`
+          ${sizeClasses[size || 'DEFAULT']} 
+          ${typeClasses[type || 'primary']}
+          ${basicClasses}
+          ${className}
+        `}
+        {...props}
+      >
+        {children}
+      </Link>
+    );
+  }
+
+  return (
+    <button
+      type={as === "button" || as === "submit" || as === "reset" ? as : "button"}
+      className={`
+        ${sizeClasses[size || 'DEFAULT']} 
+        ${typeClasses[type || 'primary']}
+        ${basicClasses}
+        ${className}
+      `}
+      {...props}
+    >
+      {children}
+    </button>
+  );
+}
 
